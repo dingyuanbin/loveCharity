@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>修改申请表</title>
+  <!-- 引入样式 -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+
+  <!-- 引入组件库 -->
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.0/axios.js"></script>
+  <script src="js/qs.min.js"></script>
+  <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+  <script src="js/jquery.cookie.js" type="text/javascript"></script>
+  <style type="text/css">
+    @import url("https://unpkg.com/element-ui@2.14.1/lib/theme-chalk/index.css");
+  </style>
+  <link rel="stylesheet" type="text/css" href="css/editForm.css"/>
+</head>
+
+<body  >
+<div id="app">
+  <h2>{{title}}</h2>
+    <span class="warning" >【修改信息后请及时保存！以免修改数据丢失】</span>
+  <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+
+      <el-form-item label-position="left" label-width="auto" label-position="left" label-width="auto" label="患者姓名"
+                    prop="name">
+        <el-input id="name" :onblur="saveCookie('name')" v-model="ruleForm.name" placeholder="填写姓名"></el-input>
+      </el-form-item>
+      <el-form-item label-position="left" label-width="auto" label-position="left" label-width="auto" label="患者性别"
+                    prop="sex">
+        <el-radio-group v-model="ruleForm.sex" id="sex" @change="sexChange">
+          <el-radio label="男"></el-radio>
+          <el-radio label="女"></el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label-position="left" label-width="auto" label-position="left" label-width="auto" label="患者年龄"
+                    prop="age">
+        <el-input id="age" :onblur="saveCookie('age')" v-model="ruleForm.age" placeholder="请输入数字"></el-input>
+      </el-form-item>
+      <el-form-item label-position="left" label-width="auto" label-position="left" label-width="auto" label="患者职业"
+                    prop="job">
+        <el-input id="job" :onblur="saveCookie('job')" v-model="ruleForm.job" placeholder="如患者为学生，请写明就读学校"></el-input>
+      </el-form-item>
+      <el-form-item label-position="left" label-width="auto" label-position="left" label-width="auto" label="所患疾病"
+                    prop="disease">
+        <br>
+        <el-select v-model="ruleForm.disease" placeholder="请选择所患疾病" @change="diseaseChange">
+          <el-option label="白血病" value="白血病"></el-option>
+          <el-option label="地中海贫血症" value="地中海贫血症"></el-option>
+          <el-option label="血友病" value="血友病"></el-option>
+          <el-option label="嗜血细胞综合症" value="嗜血细胞综合症"></el-option>
+          <el-option label="骨髓增生异常综合症(MDS)" value="骨髓增生异常综合症(MDS)"></el-option>
+          <el-option label="淋巴瘤" value="淋巴瘤"></el-option>
+          <el-option label="肾母细胞瘤" value="肾母细胞瘤"></el-option>
+          <el-option label="横纹肌肉瘤" value="横纹肌肉瘤"></el-option>
+          <el-option label="肝母细胞瘤" value="肝母细胞瘤"></el-option>
+          <el-option label="视网膜母细胞" value="视网膜母细胞"></el-option>
+          <el-option label="结肠癌" value="结肠癌"></el-option>
+          <el-option label="乳腺癌" value="乳腺癌"></el-option>
+          <el-option label="肝癌" value="肝癌"></el-option>
+          <el-option label="强直性脊柱炎" value="强直性脊柱炎"></el-option>
+          <el-option label="胆道闭锁" value="胆道闭锁"></el-option>
+          <el-option label="早产儿" value="早产儿"></el-option>
+          <el-option label="其他" value="其他"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label-position="left" label-width="auto" label-position="top" label-width="auto"
+                    prop="diseaseOthers">
+        <el-input id="diseaseOthers" :onblur="saveCookie('diseaseOthers')"  class="other" v-model="ruleForm.diseaseOthers" placeholder="所患疾病选'其他'时填写"
+                  :disabled="ruleForm.disease!='其他'"></el-input>
+      </el-form-item>
+
+      <el-form-item label-position="left" label-width="auto" label-position="left" label-width="auto" label="确诊日期"
+                    style="width: 100%;" prop="date">
+        <el-date-picker type="date" value-format="yyyy-MM-dd" placeholder="选择日期" v-model="ruleForm.date"
+                        style="width: 100%;" @change="dateChange" :picker-options="pickerOptions"></el-date-picker>
+      </el-form-item>
+      <el-form-item label-position="left" label-width="auto" label-position="left" label-width="auto" label="目前所在医院"
+                    prop="hospital">
+        <el-input id="hospital" :onblur="saveCookie('hospital')" v-model="ruleForm.hospital" placeholder="填写所在医院"></el-input>
+      </el-form-item>
+      <el-form-item label-position="left" label-width="auto" label="主治医生" prop="doctor">
+        <el-input id="doctor" :onblur="saveCookie('doctor')" v-model="ruleForm.doctor" placeholder="填写主治医生"></el-input>
+      </el-form-item>
+      <el-form-item label-position="left" label-width="auto" label="医生联系电话" prop="doctorPhoneNum">
+        <el-input id="doctorPhoneNum" :onblur="saveCookie('doctorPhoneNum')" v-model="ruleForm.doctorPhoneNum" placeholder="请填写医生或科室联系电话"></el-input>
+      </el-form-item>
+      <el-form-item label-position="left" label-width="auto" label="家庭背景" prop="background">
+        <el-input id="background" :onblur="saveCookie('background')" v-model="ruleForm.background" placeholder="家庭基本情况，务工人数，分别从事什么背景工作，是否欠有外债（请详细充分说明）"
+                  type="textarea" :rows="3"></el-input>
+      </el-form-item>
+      <el-form-item label-position="left" label-width="auto" label="患病经历" prop="illnessExperience">
+        <el-input id="illnessExperience" :onblur="saveCookie('illnessExperience')" v-model="ruleForm.illnessExperience" :rows="3"
+                  placeholder="患者什么时间,什么情况到医院检查，做了哪些检查，确诊什么病（请详细充分说明）求医路程、后续的治疗方案" type="textarea"></el-input>
+      </el-form-item>
+      <el-form-item label-position="left" label-width="auto" label="家庭经济状况证明" prop="economicSituation">
+        <br>
+        <span class="demonstration">低保证、贫困证明、精准扶贫卡、或是村委、社区级别以上开具的家庭经济情况证明,任意一个即可。填写申请表之日以往一年内有效,四角齐全。</span><br>
+          <span class="warning" >【照片删除操作不需保存便会立即执行，请谨慎使用！新提交的照片需要手动点击‘保存修改’按钮！】</span>
+        <el-upload ref="economicSituationUpload" action="file?action=upload" :on-progress="economicSituationUploadProcess" list-type="picture-card"
+                   :auto-upload="true" :accept="'image/*'" :before-upload="beforeUploadFile"
+                   :on-success="economicSituationSuccess" :on-error="economicSituationError"
+                   :on-preview="handlePictureCardPreview" :on-remove="handleRemove"
+                   :disabled="uploadDisabled.economicSituation" :file-list="fileListUrl.economicSituationUrl">
+          <i slot="default" class="el-icon-plus"></i>
+          <div slot="file" slot-scope="{file}">
+            <img class="el-upload-list__item-thumbnail" :src="file.url" alt="">
+            <span class="el-upload-list__item-actions">
+                    <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
+                    <i class="el-icon-zoom-in"></i>
+                    </span>
+
+                <span v-if="!disabled" class="el-upload-list__item-delete" @click="handleRemove(file)">
+                    <i class="el-icon-delete"></i>
+                    </span>
+                </span>
+            <el-dialog :visible.sync="dialogVisible" width="70%">
+              <img width="70%" :src="dialogImageUrl" alt="">
+            </el-dialog>
+            <el-progress name="economicSituationProcess" type="circle" :percentage="fileUploadPercent.economicSituation" v-if="fileFlag.economicSituation"></el-progress>
+          </div>
+        </el-upload>
+        <el-dialog :visible.sync="dialogVisible">
+          <img width="70%" src="dialogImageUrl" >
+        </el-dialog>
+      </el-form-item>
+
+      <div class="block">
+        <span class="imgSpan">家庭经济状况证明示例图</span>
+        <br>
+        <el-image
+                src="http://121.5.165.247/localImg/economicSituation.jpg">
+          <div slot="placeholder" class="image-slot">
+            加载中<span class="dot">...</span>
+          </div>
+        </el-image>
+      </div>
+
+      <el-form-item label-position="left" label-width="auto" label="请提交诊断证明照片" prop="proofOfDiagnosis">
+        <br>
+          <span class="warning" >【照片删除操作不需保存便会立即执行，请谨慎使用！新提交的照片需要手动点击‘保存修改’按钮！】</span>
+        <el-upload ref="proofOfDiagnosisUpload" action="file?action=upload" :on-progress="proofOfDiagnosisUploadProcess" list-type="picture-card"
+                   :auto-upload="true" :accept="'image/*'" :before-upload="beforeUploadFile"
+                   :on-success="proofOfDiagnosisSuccess" :on-error="proofOfDiagnosisError"
+                   :on-preview="handlePictureCardPreview" :on-remove="handleRemove"
+                   :disabled="uploadDisabled.proofOfDiagnosis" :file-list="fileListUrl.proofOfDiagnosisUrl">
+          <i slot="default" class="el-icon-plus"></i>
+          <div slot="file" slot-scope="{file}">
+            <img class="el-upload-list__item-thumbnail" :src="file.url" alt="">
+            <span class="el-upload-list__item-actions">
+                    <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
+                    <i class="el-icon-zoom-in"></i>
+                    </span>
+
+                <span v-if="!disabled" class="el-upload-list__item-delete" @click="handleRemove(file)">
+                    <i class="el-icon-delete"></i>
+                    </span>
+                </span>
+            <el-dialog :visible.sync="dialogVisible" width="70%">
+              <img width="70%" :src="dialogImageUrl" alt="">
+            </el-dialog>
+            <el-progress name="proofOfDiagnosisProcess" type="circle" :percentage="fileUploadPercent.proofOfDiagnosis" v-if="fileFlag.proofOfDiagnosis"></el-progress>
+          </div>
+        </el-upload>
+        <el-dialog :visible.sync="dialogVisible">
+          <img width="70%" :src="dialogImageUrl" alt="">
+        </el-dialog>
+
+      </el-form-item>
+      <el-form-item label-position="left" label-width="auto" label="近期缴费单据或发票" prop="paymentReceipt">
+        <br>
+        <span class="demonstration">照片要求清晰，票据四角齐全</span>
+          <br><span class="warning" >【照片删除操作不需保存便会立即执行，请谨慎使用！新提交的照片需要手动点击‘保存修改’按钮！】</span>
+        <el-upload ref="paymentReceiptUpload" action="file?action=upload" :on-progress="paymentReceiptUploadProcess" list-type="picture-card"
+                   :auto-upload="true" :accept="'image/*'" :before-upload="beforeUploadFile"
+                   :on-success="paymentReceiptSuccess" :on-error="paymentReceiptError"
+                   :on-preview="handlePictureCardPreview" :on-remove="handleRemove"
+                   :disabled="uploadDisabled.paymentReceipt" :file-list="fileListUrl.paymentReceiptUrl">
+          <i slot="default" class="el-icon-plus"></i>
+          <div slot="file" slot-scope="{file}">
+            <img class="el-upload-list__item-thumbnail" :src="file.url" alt="">
+            <span class="el-upload-list__item-actions">
+                    <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
+                    <i class="el-icon-zoom-in"></i>
+                    </span>
+
+                <span v-if="!disabled" class="el-upload-list__item-delete" @click="handleRemove(file)">
+                    <i class="el-icon-delete"></i>
+                    </span>
+                </span>
+            <el-dialog :visible.sync="dialogVisible" width="70%">
+              <img width="70%" :src="dialogImageUrl" alt="">
+            </el-dialog>
+            <el-progress name="paymentReceiptProcess" type="circle" :percentage="fileUploadPercent.paymentReceipt" v-if="fileFlag.paymentReceipt"></el-progress>
+          </div>
+        </el-upload>
+        <el-dialog :visible.sync="dialogVisible">
+          <img width="70%" src="dialogImageUrl" alt="">
+        </el-dialog>
+      </el-form-item>
+      <el-form-item label-position="left" label-width="auto" label="患者宣传照片" prop="patientPhotos">
+        <br>
+        <span class="demonstration">建议：患者病前照片，病后照片。（5-8张）照片一定要清晰，横拍</span>
+          <br><span class="warning" >【照片删除操作不需保存便会立即执行，请谨慎使用！新提交的照片需要手动点击‘保存修改’按钮！】</span>
+        <el-upload ref="patientPhotosUpload" action="file?action=upload" :on-progress="patientPhotosUploadProcess" list-type="picture-card"
+                   :auto-upload="true" :accept="'image/*'" :before-upload="beforeUploadFile"
+                   :on-success="patientPhotosSuccess" :on-error="patientPhotosError"
+                   :on-preview="handlePictureCardPreview" :on-remove="handleRemove"
+                   :disabled="uploadDisabled.patientPhotos" :file-list="fileListUrl.patientPhotosUrl">
+          <i slot="default" class="el-icon-plus"></i>
+          <div slot="file" slot-scope="{file}">
+            <img class="el-upload-list__item-thumbnail" :src="file.url" alt="">
+            <span class="el-upload-list__item-actions">
+                    <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
+                    <i class="el-icon-zoom-in"></i>
+                    </span>
+
+                <span v-if="!disabled" class="el-upload-list__item-delete" @click="handleRemove(file)">
+                    <i class="el-icon-delete"></i>
+                    </span>
+                </span>
+            <el-dialog :visible.sync="dialogVisible" width="70%">
+              <img width="70%" :src="dialogImageUrl" alt="">
+            </el-dialog>
+            <el-progress name="patientPhotosProcess" type="circle" :percentage="fileUploadPercent.patientPhotos" v-if="fileFlag.patientPhotos"></el-progress>
+          </div>
+        </el-upload>
+        <el-dialog :visible.sync="dialogVisible">
+          <img width="70%" :src="dialogImageUrl" alt="">
+        </el-dialog>
+      </el-form-item>
+      <el-form-item label-position="left" label-width="auto" label="购买保险情况" prop="insurance">
+        <br>
+        <el-select v-model="ruleForm.insurance" placeholder="请选择保险" @change="insuranceChange">
+          <el-option label="无" value="无"></el-option>
+          <el-option label="医保" value="医保"></el-option>
+          <el-option label="互助保险." value="互助保险"></el-option>
+          <el-option label="新农舍" value="新农舍"></el-option>
+          <el-option label="学生保险." value="学生保险"></el-option>
+          <el-option label="商业保险" value="商业保险"></el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label-position="left" label-width="auto" label="报销比例" prop="reimbursementRatios">
+        <el-input id="reimbursementRatios" :onblur="saveCookie('reimbursementRatios')" v-model="ruleForm.reimbursementRatios" placeholder="如没有购买保险，请填写 0"></el-input>
+      </el-form-item>
+
+      <el-form-item label-position="left" label-width="auto" label="其他渠道筹款情况" prop="insurance">
+        <br>
+        <el-select v-model="ruleForm.fundRaisingChannel" placeholder="请选择渠道" @change="fundRaisingChannelChange">
+          <el-option label="无" value="无"></el-option>
+          <el-option label="轻松筹" value="轻松筹"></el-option>
+          <el-option label="水滴筹." value="水滴筹"></el-option>
+          <el-option label="其他" value="其他"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label-position="left" label-width="auto" label-position="top" label-width="auto"
+                    prop="othersFundRaisingChannel">
+        <el-input id="othersFundRaisingChannel" :onblur="saveCookie('othersFundRaisingChannel')" class="other" v-model="ruleForm.othersFundRaisingChannel" placeholder="选择'其他'时填写"
+                  :disabled="ruleForm.fundRaisingChannel!='其他'"></el-input>
+      </el-form-item>
+      <el-form-item label-position="left" label-width="auto" label="目前已获得资助的金额" prop="amountReceived">
+        <el-input id="amountReceived" :onblur="saveCookie('amountReceived')" v-model="ruleForm.amountReceived" placeholder="如水滴筹筹了2万，xx基金筹了1万,则填3万"></el-input>
+      </el-form-item>
+      <el-form-item label-position="left" label-width="auto" label="固定资产" prop="fixedAssets">
+        <el-input id="fixedAssets" :onblur="saveCookie('fixedAssets')" v-model="ruleForm.fixedAssets" :rows="4"
+                  placeholder="汽车、房子、请详细充分说明,车子是什么车,哪一年购买，目前大约市值多少?房子是商品房,还是自建房，目前估值约多少?房贷车贷是否有还清。(请详细充分说明)。"
+                  type="textarea"></el-input>
+      </el-form-item>
+      <el-form-item label-position="left" label-width="auto" label="家庭人口数量" prop="familySize">
+        <el-input id="familySize" :onblur="saveCookie('familySize')" v-model="ruleForm.familySize" placeholder="请准确填写家庭人口数"></el-input>
+      </el-form-item>
+      <el-form-item label-position="left" label-width="auto" label="后续治疗费用缺口" prop="costGap">
+        <el-input id="costGap" :onblur="saveCookie('costGap')" v-model="ruleForm.costGap" placeholder="费用缺口=预计总费用-报销-所获得的资助款-固定资产"></el-input>
+      </el-form-item>
+      <el-form-item label-position="left" label-width="auto" label="家庭住址" prop="homeAddress">
+        <el-input id="homeAddress" :onblur="saveCookie('homeAddress')" v-model="ruleForm.homeAddress" placeholder="详细填写家庭详细住址，具体到门牌号"></el-input>
+      </el-form-item>
+
+      <el-form-item label-position="left" label-width="auto" label="家庭成员信息" prop="memberOfFamily">
+        <br>
+        <span class="demonstration">请上传四角齐全清晰户口本原件照片(包含户主页，家庭成员页)
+                如上传身份证，需提供身份证正反面照片。</span>
+          <br><span class="warning" >【照片删除操作不需保存便会立即执行，请谨慎使用！新提交的照片需要手动点击‘保存修改’按钮！】</span>
+        <el-upload ref="memberOfFamilyUpload" action="file?action=upload" :on-progress="memberOfFamilyUploadProcess" list-type="picture-card"
+                   :auto-upload="true" :accept="'image/*'" :before-upload="beforeUploadFile"
+                   :on-success="memberOfFamilySuccess" :on-error="memberOfFamilyError"
+                   :on-preview="handlePictureCardPreview" :on-remove="handleRemove"
+                   :disabled="uploadDisabled.memberOfFamily" :file-list="fileListUrl.memberOfFamilyUrl">
+          <i slot="default" class="el-icon-plus"></i>
+          <div slot="file" slot-scope="{file}">
+            <img class="el-upload-list__item-thumbnail" :src="file.url" alt="">
+            <span class="el-upload-list__item-actions">
+                    <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
+                    <i class="el-icon-zoom-in"></i>
+                    </span>
+
+                <span v-if="!disabled" class="el-upload-list__item-delete" @click="handleRemove(file)">
+                    <i class="el-icon-delete"></i>
+                    </span>
+                </span>
+            <el-dialog :visible.sync="dialogVisible" width="70%">
+              <img width="70%" :src="dialogImageUrl" alt="">
+            </el-dialog>
+            <el-progress name="memberOfFamilyProcess" type="circle" :percentage="fileUploadPercent.memberOfFamily" v-if="fileFlag.memberOfFamily"></el-progress>
+          </div>
+        </el-upload>
+
+        <el-dialog :visible.sync="dialogVisible">
+          <img width="70%" src="dialogImageUrl" alt="">
+        </el-dialog>
+      </el-form-item>
+      <el-form-item label-position="left" label-width="auto" label="联系人姓名" prop="contactName">
+        <el-input id="contactName" :onblur="saveCookie('contactName')" v-model="ruleForm.contactName" placeholder="填写联系人姓名"></el-input>
+      </el-form-item>
+      <el-form-item label-position="left" label-width="auto" label="求助信" prop="helpLetter">
+        <el-input id="helpLetter" :onblur="saveCookie('helpLetter')" v-model="ruleForm.helpLetter" placeholder="填写求助信" :rows="4"  type="textarea"></el-input>
+      </el-form-item>
+      <el-form-item label-position="left" label-width="auto" label="联系人电话" prop="contactPhoneNum">
+        <el-input id="contactPhoneNum" :onblur="saveCookie('contactPhoneNum')" v-model="ruleForm.contactPhoneNum" placeholder="填写联系人电话"></el-input>
+      </el-form-item>
+      <el-form-item label-position="left" label-width="auto" label="联系人微信" prop="contactWechat">
+        <el-input id="contactWechat" :onblur="saveCookie('contactWechat')" v-model="ruleForm.contactWechat" placeholder="填写联系人微信，若没有微信则填‘无’"></el-input>
+      </el-form-item>
+
+      <el-form-item label-position="left" label-width="auto" label="联系人与患者关系" prop="relation" >
+        <br>
+        <el-select v-model="ruleForm.relation" placeholder="请选择渠道" @change="relationChange">
+          <el-option label="本人" value="本人"></el-option>
+          <el-option label="父母" value="父母"></el-option>
+          <el-option label="亲友." value="亲友"></el-option>
+          <el-option label="志愿者" value="志愿者"></el-option>
+          <el-option label="爱心人士" value="爱心人士"></el-option>
+          <el-option label="医生" value="医生"></el-option>
+          <el-option label="媒体人" value="媒体人"></el-option>
+          <el-option label="其他" value="其他"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label-position="left" label-width="auto" label-position="top" label-width="auto"
+                    prop="othersRelation">
+        <el-input id="othersRelation" :onblur="saveCookie('othersRelation')" class="other" v-model="ruleForm.othersRelation" placeholder="选择'其他'时填写"
+                  :disabled="ruleForm.relation!='其他'"></el-input>
+      </el-form-item>
+      <div class="submit" >
+        <el-button type="primary" @click="editForm('ruleForm')" >保存修改</el-button>
+      </div>
+  </el-form>
+
+</div>
+</body>
+
+<script type="text/javascript" src="js/editForm.js"></script>
+
+</html>

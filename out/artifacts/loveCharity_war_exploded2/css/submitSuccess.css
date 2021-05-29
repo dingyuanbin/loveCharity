@@ -1,0 +1,30 @@
+body {
+    font-family: "microsoft yahei";
+    color: #323232;
+    min-width: 100%;
+}
+
+.messageMain {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.messageMain .messageImg {
+    width: 450px;
+    height: 400px;
+}
+.messageMain .messageImg img {
+    width: 350px;
+    height: 350px;
+    margin: 0 auto;
+}
+.messageMain .messageImg span {
+    width: 100%;
+    text-align: center;
+    margin-top: 15px;
+    font-size: 30px;
+    color: #333;
+}

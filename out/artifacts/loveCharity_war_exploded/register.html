@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		 <!-- 引入样式 -->
+		 <link href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.14.1/theme-chalk/index.css" rel="stylesheet">
+		 <!-- 引入组件库 -->
+		 <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.12/vue.js"></script>
+		 <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.14.1/index.js"></script>
+		 <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.0/axios.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.4/qs.min.js"></script>
+		<link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+	</head>
+
+	<body>
+		<div id="app">
+			<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+				<div style="clear: both;margin: 10px;">
+					<i class="fa fa-plus-square-o fa-2x" aria-hidden="true">注册账号</i>
+				</div>
+				<el-form-item label="用户昵称" prop="userName">
+					<el-input v-model="ruleForm.userName"></el-input>
+				</el-form-item>
+				<el-form-item label="密码" prop="passWord">
+					<el-input v-model="ruleForm.passWord" type="password"></el-input>
+                </el-form-item>
+                <el-form-item label="确认密码" prop="rePassWord">
+					<el-input v-model="ruleForm.rePassWord" type="password"></el-input>
+				</el-form-item>
+
+				<el-form-item size="large">
+					<el-button type="primary" @click="onSubmit('ruleForm')">注册</el-button>
+					<el-button @click="cancel()">取消</el-button>
+				</el-form-item>
+			</el-form>
+		</div>
+	</body>
+
+</html>
+<script>
+    var Main = {
+        data() {
+            //自定义验证
+			var checkReplPassword = (rule, value, callback) => {
+				if(value != this.ruleForm.passWord) {
+					callback(new Error('两次密码不一致'));
+				} else {
+					callback();
+				}
+			}
+            return {
+                ruleForm: {
+					userName: '',
+					passWord: '',
+					rePassWord: '',
+                },
+                rules: {
+                    userName: [{
+                        required: true,
+                        message: '请输入用户账号',
+                        trigger: 'blur'
+                    }],
+                    passWord: [{
+                        required: true,
+                        message: '请输入密码',
+                        trigger: 'blur'
+                    }],
+                    rePassWord: [{
+                        required: true,
+                        message: '请再次确认密码',
+                        trigger: 'blur'
+                    },{
+                        validator:checkReplPassword,
+                        trigger: 'blur'
+                    }
+                ],
+                }
+                
+            }
+        },
+        methods: {
+            //注册按钮事件
+			onSubmit(formName) {
+				this.$refs[formName].validate((valid) => {
+					if(valid) {
+						this.postData();//提交数据
+					}
+					return false;
+				});
+            },
+            //取消按钮事件
+			cancel(){
+				parent.location.reload();
+			},
+			//提交数据
+			postData() {
+				axios.post('user?action=register', Qs.stringify(this.ruleForm))
+					.then(resp => {
+						if(resp.data.code == 0) {
+							this.$alert('注册成功,您的用户账号为:'+resp.data.data.userId, '提示', {
+								confirmButtonText: '确定',
+								callback: action => {
+									parent.location.reload();
+								}
+							});
+						} else {
+							location.href = 'error.html';
+						}
+					}).catch(() => {
+						location.href = 'error.html';
+					});
+				//延时加载
+				this.loading();
+			},
+			////延时加载
+			loading() {
+				const loading = this.$loading({
+					lock: true,
+					text: '注册中',
+					spinner: 'el-icon-loading',
+					background: 'rgba(0, 0, 0, 0.7)'
+				});
+				setTimeout(() => {
+					loading.close();
+				}, 1000);
+			}
+        },
+    }
+    var Ctor = Vue.extend(Main)
+	new Ctor().$mount('#app')
+</script>

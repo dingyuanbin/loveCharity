@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>申请表管理</title>
+    <!-- 引入样式 -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.14.1/theme-chalk/index.css" rel="stylesheet">
+    <link href="css/administration.css" rel="stylesheet" type="text/css">
+    <!-- 引入组件库 -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.12/vue.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.14.1/index.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.0/axios.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.4/qs.min.js"></script>
+</head>
+<body>
+<div id="app">
+
+    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect"
+             background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" >
+        <el-menu-item index="1" style="font-size: 60px !important; ">待援助</el-menu-item>
+        <el-menu-item index="2" style="font-size: 60px !important;">援助中</el-menu-item>
+        <el-menu-item index="3" style="font-size: 60px !important;">援助完成</el-menu-item>
+    </el-menu>
+    <div class="block" id="select">
+        <el-select v-model="selectType" slot="prepend" placeholder="请选择搜索类型" @change="changeShow">
+            <el-option label="姓名" value="1" style="font-size: 30px !important;"></el-option>
+            <el-option label="所患疾病" value="2" style="font-size: 30px !important;"></el-option>
+            <el-option label="提交时间" value="3" style="font-size: 30px !important;"></el-option>
+        </el-select>
+    </div>
+    <div class="block input" v-show="!dataShow">
+        <el-input placeholder="请搜索内容" class="input-with-select" v-model="searchValue"></el-input>
+    </div>
+    <div class="block input" v-show="dataShow">
+        <el-date-picker v-model="search.submitDate" type="date" placeholder="选择日期" :picker-options="pickerOptions"
+                        id="date" value-format="yyyy-MM-dd"></el-date-picker>
+    </div>
+    <div class="block" id="button">
+        <el-button slot="append" icon="el-icon-search" @click="handleQuery"></el-button>
+    </div>
+    <template>
+        <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%; font-size: 30px; "
+                  :row-style="{height:'35px'}"
+                  @selection-change="allSelect" v-loading="loading"
+                  element-loading-text="拼命加载中"
+                  element-loading-spinner="el-icon-loading"
+                  element-loading-background="rgba(0, 0, 0, 0.8)" stripe>
+            <el-table-column type="selection" width="60" fixed="left">
+            </el-table-column>
+            <el-table-column prop="patientId" label="患者编号" v-if="false">
+            </el-table-column>
+            <el-table-column prop="name" label="姓名" width="150">
+            </el-table-column>
+            <el-table-column prop="disease" label="所患疾病">
+            </el-table-column>
+            <el-table-column prop="submitDate" label="提交时间">
+            </el-table-column>
+            <el-table-column fixed="right" label="操作" width="350">
+                <template slot-scope="scope">
+                    <div v-show="assistance" class="operation">
+                        <el-button type="primary" @click="action(scope.row,scope.$index)">进行援助</el-button>
+                        <el-button type="success" @click="detail(scope.row)">查看详细</el-button>
+                    </div>
+                    <div v-show="completeAssistance" class="operation">
+                        <el-button type="primary" @click="action(scope.row,scope.$index)">完成援助
+                        </el-button>
+                        <el-button type="success" @click="detail(scope.row)">查看详细</el-button>
+                    </div>
+                    <div v-show="restartAssistance" class="operation">
+                        <el-button type="primary" @click="action(scope.row,scope.$index)">重新援助
+                        </el-button>
+                        <el-button type="success" @click="detail(scope.row)">查看详细</el-button>
+                    </div>
+                </template>
+            </el-table-column>
+        </el-table>
+    </template>
+    <div>
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                       :current-page="pagination.currentPage" :page-sizes="[3,5, 10, 15, 20,100]"
+                       :page-size="pagination.pageSize" layout="total, sizes, prev, pager, next, jumper"
+                       :total="pagination.total"
+                       background>
+        </el-pagination>
+    </div>
+    <div class="deleteButton">
+        <el-button type="danger" icon="el-icon-delete" @click="deleteSelection">删除所选</el-button>
+    </div>
+
+</div>
+</body>
+<script type="text/javascript" src="js/administration.js"></script>
+</html>

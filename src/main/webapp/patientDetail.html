@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>患者详细</title>
+    <!-- 引入样式 -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.14.1/theme-chalk/index.css" rel="stylesheet">
+    <link href="css/patientDetail.css" rel="stylesheet" type="text/css">
+    <!-- 引入组件库 -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.12/vue.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.14.1/index.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.0/axios.js"></script>
+    <script src="js/qs.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <h2>{{title}}</h2>
+    <br>
+    <div class="item">
+        <label class="label">患者姓名：</label>
+        <span class="info">{{info.name}}</span>
+    </div>
+    <br><br>
+    <div class="item">
+        <label class="label">患者性别：</label>
+        <span class="info">{{info.sex}}</span>
+    </div>
+    <br><br>
+    <div class="item">
+        <label class="label">患者年龄：</label>
+        <span class="info">{{info.age}}</span>
+    </div>
+    <br><br>
+    <div class="item">
+        <label class="label">患者职业：</label>
+        <span class="info">{{info.job}}</span>
+    </div>
+    <br><br>
+    <div class="item">
+        <label class="label">所患疾病：</label>
+        <span class="info">{{info.disease}}</span>
+    </div>
+    <br><br>
+    <div class="item">
+        <label class="label">确诊日期：</label>
+        <span class="info">{{info.date}}</span>
+    </div>
+    <br><br>
+    <div class="item">
+        <label class="label">目前所在医院：</label>
+        <span class="info">{{info.hospital}}</span>
+    </div>
+    <br><br>
+    <div class="item">
+        <label class="label">主治医生：</label>
+        <span class="info">{{info.doctor}}</span>
+    </div>
+    <br><br>
+    <div class="item">
+        <label class="label">主治医生联系电话：</label>
+        <span class="info">{{info.doctorPhoneNum}}</span>
+    </div>
+    <br><br>
+    <div class="item">
+        <label class="label">家庭背景：</label>
+        <span class="info">{{info.background}}</span>
+    </div>
+    <br><br>
+    <div class="item">
+        <label class="label">患病经历：</label>
+        <span class="info">{{info.illnessExperience}}</span>
+    </div>
+    <br><br>
+    <div class="item">
+        <label class="labelImg">家庭经济状况证明：</label><br>
+        <div class="img" v-for="(src,index) in economicSituation">
+            <el-image :src="src"></el-image>
+            <br>
+        </div>
+        <br><br>
+    </div>
+    <br>
+    <div class="item">
+        <label class="labelImg">诊断证明：</label><br>
+        <div class="img" v-for="(src,index) in proofOfDiagnosis">
+            <el-image :src="src"></el-image>
+            <br>
+        </div>
+        <br><br>
+    </div>
+    <br>
+    <div class="item">
+        <label class="labelImg">近期缴费单据或发票：</label><br>
+        <div class="img" v-for="(src,index) in paymentReceipt">
+            <el-image :src="src"></el-image>
+            <br>
+        </div>
+        <br><br>
+    </div>
+    <br>
+    <div class="item">
+        <label class="labelImg">患者宣传照片：</label><br>
+        <div class="img" v-for="(src,index) in patientPhotos">
+            <el-image :src="src"></el-image>
+            <br>
+        </div>
+        <br><br>
+    </div>
+    <br>
+    <div class="item">
+        <label class="label">保险：</label>
+        <span class="info">{{info.insurance}}</span>
+    </div>
+    <br>
+    <div class="item">
+        <label class="label">报销比例：</label>
+        <span class="info">{{info.reimbursementRatios}}</span>
+    </div>
+    <br>
+    <div class="item">
+        <label class="label">筹款渠道：</label>
+        <span class="info">{{info.fundRaisingChannel}}</span>
+    </div>
+    <br>
+    <div class="item">
+        <label class="label">目前已获得资助的金额：</label>
+        <span class="info">{{info.amountReceived}}</span>
+    </div>
+    <br>
+    <div class="item">
+        <label class="label">固定资产：</label>
+        <span class="info">{{info.fixedAssets}}</span>
+    </div>
+    <br>
+    <div class="item">
+        <label class="label">家庭人口数量：</label>
+        <span class="info">{{info.familySize}}</span>
+    </div>
+    <br>
+    <div class="item">
+        <label class="label">后续治疗费用缺口：</label>
+        <span class="info">{{info.costGap}}</span>
+    </div>
+    <br>
+    <div class="item">
+        <label class="label">家庭住址：</label>
+        <span class="info">{{info.homeAddress}}</span>
+    </div>
+    <br>
+    <div class="item">
+        <label class="labelImg">家庭成员信息：</label><br>
+        <div class="img" v-for="(src,index) in memberOfFamily">
+            <el-image :src="src"></el-image>
+            <br>
+        </div>
+        <br><br>
+    </div>
+    <br>
+    <div class="item">
+        <label class="label">联系人姓名：</label>
+        <span class="info">{{info.contactName}}</span>
+    </div>
+    <br>
+    <div class="item">
+        <label class="label">联系人电话：</label>
+        <span class="info">{{info.contactPhoneNum}}</span>
+    </div>
+    <br>
+    <div class="item">
+        <label class="label">求助信：</label>
+        <span class="info">{{info.helpLetter}}</span>
+    </div>
+    <br>
+    <div class="item">
+        <label class="label">联系人微信：</label>
+        <span class="info">{{info.contactWechat}}</span>
+    </div>
+    <br>
+    <div class="item">
+        <label class="label">联系人与患者关系：</label>
+        <span class="info">{{info.relation}}</span>
+    </div>
+    <br>
+    <div class="submit">
+        <el-button type="primary" @click="editForm()">修改信息</el-button>
+    </div>
+
+
+</div>
+
+</body>
+<script type="text/javascript" src="js/patientDetail.js"></script>
+</html>

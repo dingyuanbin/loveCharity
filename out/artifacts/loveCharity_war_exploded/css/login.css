@@ -1,0 +1,223 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.bgpic {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+}
+
+.ave {
+    animation-name: zoomInLeft;
+    animation-duration: 2s;
+    animation-fill-mode: both;
+}
+
+.main {
+    width: 400px;
+    height: 300px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -150px 0 0 -200px;
+}
+
+.main.animated {
+    animation-name: fadeInLeft;
+    animation-duration: 1.5s;
+    animation-fill-mode: both;
+    animation-timing-function: ease-in-out;
+    animation-delay: 1.5s;
+}
+
+.main .txt {
+    border-radius: 5px;
+    width: 200px;
+    height: 30px;
+    position: absolute;
+    outline: none;
+}
+
+#btt {
+    border-radius: 15px;
+    width: 150px;
+    height: 45px;
+    /* position: absolute;
+    top: 180px;
+    left: 50px; */
+    background-color: #97FFFF;
+}
+
+#btt:hover {
+    background-color: #8DB6CD;
+}
+
+/*main块内布局设计*/
+.img1 {
+    width: 35px;
+    height: 35px;
+    position: absolute;
+}
+
+.img1.x {
+    left: 55px;
+    top: 30px
+}
+
+.img1.y {
+    left: 55px;
+    top: 105px;
+}
+
+.txt.Bx {
+    top: 30px;
+    left: 120px;
+}
+
+.txt.By {
+    top: 105px;
+    left: 120px;
+}
+
+#register {
+    text-decoration: none;
+    /* position: absolute;
+    top: 230px;
+    right: 30px; */
+    color: #000000;
+}
+
+#register:hover {
+    animation-name: shakeX;
+    animation-duration: 0.25s;
+    animation-fill-mode: both;
+}
+
+#reset {
+    text-decoration: none;
+    /* position: absolute;
+    top: 230px;
+    left: 30px; */
+    color:#000000;
+}
+
+#reset:hover {
+    animation-name: shakeX;
+    animation-duration: 0.25s;
+    animation-fill-mode: both;
+}
+
+#tips {
+    color: red;
+    position: absolute;
+    top: 150px;
+    left: 55px;
+    font-size: 10px;
+    display: none;
+}
+
+h1 {
+    position: absolute;
+    top: 20%;
+    left: 36%;
+    animation-name: flipInX;
+    animation-duration: 1s;
+    animation-fill-mode: both;
+    animation-timing-function: ease-in-out;
+    animation-delay: 2s;
+}
+
+/*动画*/
+@keyframes zoomInLeft {
+    from {
+        opacity: 0;
+        -webkit-transform: scale3d(0.1, 0.1, 0.1) translate3d(-1000px, 0, 0);
+        transform: scale3d(0.1, 0.1, 0.1) translate3d(-1000px, 0, 0);
+        -webkit-animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+        animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    }
+
+    60% {
+        opacity: 1;
+        -webkit-transform: scale3d(0.475, 0.475, 0.475) translate3d(10px, 0, 0);
+        transform: scale3d(0.475, 0.475, 0.475) translate3d(10px, 0, 0);
+        -webkit-animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+        animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+    }
+}
+
+@keyframes shakeX {
+
+    from,
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+        -webkit-transform: translate3d(-10px, 0, 0);
+        transform: translate3d(-10px, 0, 0);
+    }
+
+    20%,
+    40%,
+    60%,
+    80% {
+        -webkit-transform: translate3d(10px, 0, 0);
+        transform: translate3d(10px, 0, 0);
+    }
+}
+
+@keyframes flipInX {
+    from {
+        -webkit-transform: perspective(400px) rotate3d(1, 0, 0, 90deg);
+        transform: perspective(400px) rotate3d(1, 0, 0, 90deg);
+        -webkit-animation-timing-function: ease-in;
+        animation-timing-function: ease-in;
+        opacity: 0;
+    }
+
+    40% {
+        -webkit-transform: perspective(400px) rotate3d(1, 0, 0, -20deg);
+        transform: perspective(400px) rotate3d(1, 0, 0, -20deg);
+        -webkit-animation-timing-function: ease-in;
+        animation-timing-function: ease-in;
+    }
+
+    60% {
+        -webkit-transform: perspective(400px) rotate3d(1, 0, 0, 10deg);
+        transform: perspective(400px) rotate3d(1, 0, 0, 10deg);
+        opacity: 1;
+    }
+
+    80% {
+        -webkit-transform: perspective(400px) rotate3d(1, 0, 0, -5deg);
+        transform: perspective(400px) rotate3d(1, 0, 0, -5deg);
+    }
+
+    to {
+        -webkit-transform: perspective(400px);
+        transform: perspective(400px);
+    }
+}
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        -webkit-transform: translate3d(-100%, 0, 0);
+        transform: translate3d(-100%, 0, 0);
+    }
+
+    to {
+        opacity: 1;
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}

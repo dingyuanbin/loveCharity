@@ -1,0 +1,28 @@
+.label{
+    font-weight: bold;
+}
+
+.item{
+    font-size: 50px;
+}
+
+.labelImg{
+    text-align: center;
+    color: brown;
+    font-weight: bold;
+}
+
+.el-page-header__content{
+    font-size: 40px !important;
+}
+.el-page-header__title {
+    font-size: 40px !important;
+}
+
+span{
+    white-space:normal
+}
+
+body{
+    word-break:break-all;
+}

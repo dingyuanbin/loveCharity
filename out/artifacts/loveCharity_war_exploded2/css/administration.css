@@ -1,0 +1,91 @@
+.block {
+    display: inline-block;
+}
+
+.input {
+    width: 70%;
+}
+
+#select {
+    width: 20%;
+}
+
+#button {
+    width: 5%;
+}
+
+
+.add {
+    display: inline-block;
+    font-size: 20px;
+    color: gray;
+}
+
+.main {
+    text-align: center;
+}
+
+.deleteButton{
+    text-align: center;
+}
+
+.deleteButton el-button{
+    margin: 0 auto;
+}
+
+.el-input__inner{
+    font-size: 35px !important;
+}
+
+.el-pagination button, .el-pagination span:not([class*=suffix]){
+    font-size: 40px !important;
+}
+
+.el-pagination {
+    height: 60px !important;
+    padding: 20px 10px !important;
+}
+
+
+.el-table .cell{
+    line-height:45px !important;
+}
+
+.el-checkbox__inner{
+    width: 25px !important;
+    height: 25px !important;
+}
+
+.el-checkbox__input.is-indeterminate .el-checkbox__inner::before{
+    top: 10px !important;
+    height: 4px !important;
+}
+.el-checkbox__input.is-checked .el-checkbox__inner::after{
+    transform: rotate(45deg) scaleY(1.5) !important;
+}
+
+.el-checkbox__inner::after{
+    height: 7px !important;
+    left: 9px !important;
+    top: 8px !important;
+    width: 3px !important;
+}
+
+.el-button{
+    font-size: 25px;
+}
+
+.el-pagination .el-select .el-input{
+    width: 200px;
+    height: 50px;
+}
+
+.el-pagination .el-select .el-input .el-input__inner {
+    height: 50px;
+}
+.el-menu{
+    height: 75px;
+}
+.el-menu--horizontal>.el-menu-item.is-active{
+    height: 70px;
+}

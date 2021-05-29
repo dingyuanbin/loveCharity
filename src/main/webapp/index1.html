@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- meta -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="renderer" content="webkit">
+    <meta property="qc:admins" content="23635710066417756375"/>
+    <meta name="baidu-site-verification" content="QIQ6KC1oZ6"/>
+    <meta charset="UTF-8">
+
+    <meta content="弘爱公益求助中心管理员登陆" name="keywords">
+    <meta name="viewport" content="width=device-width"/>
+
+    <title>登录</title>
+
+    <!-- H5	 -->
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.min.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+    <!-- 引入样式 -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.14.1/theme-chalk/index.css" rel="stylesheet">
+    <!-- 引入组件库 -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.12/vue.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.14.1/index.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.0/axios.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.4/qs.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/dmaku2.css"/>
+</head>
+
+<body>
+
+<!--<header id="header">-->
+<!--    <a href="javascript:;" class="logo"></a>-->
+<!--</header>&lt;!&ndash; /header &ndash;&gt;-->
+
+<!-- 页面主体START -->
+<div id="app">
+    <section id="main">
+        <h1>登录</h1>
+        <el-form :model="ruleForm" ref="ruleForm" :rules="rules" :inline="false" size="normal" id="_form"
+                 label-width="10px">
+
+            <div class="clearfix" data-propertyname="username" data-controltype="Phone">
+                <el-form-item prop="userID">
+                    <input type="text" v-model="ruleForm.userID" placeholder="管理账号" size="normal"></input>
+                </el-form-item>
+            </div>
+
+            <div class="clearfix" data-propertyname="password" data-controltype="Password">
+                <el-form-item prop="passWord">
+                    <input type="passWord" v-model="ruleForm.passWord" placeholder="密码" size="normal"></input>
+                </el-form-item>
+            </div>
+
+            <!--        <div class="verifyCodeInput clearfix" data-propertyname="request_form_verifyCode" data-controltype="VerifyCode"-->
+            <!--             style="display:none;">-->
+            <!--            <div class="code_cont">-->
+            <!--                <input type="text" name="" placeholder="请证明你不是机器人" data-required="required" autocomplete="off">-->
+            <!--                <img src="" alt="" class="yzm">-->
+            <!--                <a href="javascript:;" class="reflash"></a>-->
+            <!--            </div>-->
+            <!--        </div>-->
+
+            <!--        <div class="clearfix">-->
+            <!--            &lt;!&ndash; <label>-->
+            <!--                <input type="checkbox" class="autologin" />-->
+            <!--                自动登录-->
+            <!--            </label> &ndash;&gt;-->
+            <!--            <a href="javascript:;" class="forgot_pwd">忘记密码？</a>-->
+            <!--        </div>-->
+
+            <div class="clearfix btn_login" data-propertyname="submit" data-controltype="Botton">
+                <input type="submit" value="登录" @click="submitForm('ruleForm')">
+            </div>
+
+            <div class="clearfix goregister">
+                <a href="javascript:;">注册</a>
+            </div>
+
+            <input type="hidden" value="" id="isVisiable_request_form_verifyCode"/>
+
+        </el-form>
+    </section>
+</div>
+<!-- 页面主体END -->
+
+<!--<footer id="footer">-->
+
+<!--    <div>客服热线：XXX <span>（周一至周五10:00-19:00）</span></div>-->
+<!--    <p>Copyright ? 2020 </p>-->
+<!--</footer>-->
+
+</body>
+<script type="text/javascript" src="js/login.js"></script>
+</html>
